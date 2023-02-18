@@ -5,7 +5,7 @@ import lottery from './lottery';
 
 class App extends React.Component {
   
-  state = { manager: '', players: [], balance: '', value: '', message: '' };
+  state = { manager: '', players: [], balance: '', value: '', message: '--', previousWinner: '--', button: true };
 
   async componentDidMount(){
     const manager = await lottery.methods.manager().call();
@@ -19,9 +19,9 @@ class App extends React.Component {
     event.preventDefault();
     if(this.state.value <= 0.01){
       alert(`Ether of value greater than 0.01 ether is required to enter`)
-      window.location.reload(false);
       return;
     }
+    this.setState({ button: false });
     const accounts = await web3.eth.getAccounts();
     this.setState({ message: "Wait for transaction to complete..." });
     await lottery.methods.enter().send({
@@ -35,6 +35,7 @@ class App extends React.Component {
     }).catch(err => {
       this.setState({ message: "Transaction Aborted by User." });
     });
+    this.setState({ button: true });
   };
 
   onClick = async () => {
@@ -48,14 +49,17 @@ class App extends React.Component {
       alert('No players found.');
       return;
     }
+    this.setState({ button: false });
     this.setState({ message: "Wait for transaction to complete..." });
     await lottery.methods.pickWinner().send({
       from: accounts[0]
-    }).then(details => {
-      this.setState({ players: [],balance: '',message: 'A winner has been picked.' });
+    }).then(async details => {
+      const winner = await lottery.methods.winner().call();
+      this.setState({ players: [],balance: '',message: 'A winner has been picked.',previousWinner: `${winner} [ declared on ${Date().toLocaleString()} ]` });
     }).catch(err => {
       this.setState({ message: "Winner is not picked yet as per manager's preferences." });
     });
+    this.setState({ button: true });
   };
 
   render() {
@@ -75,13 +79,15 @@ class App extends React.Component {
             <label>Amount of ether to enter</label>&nbsp;&nbsp;
             <input placeholder="enter value > 0.01 ether" value={this.state.value} onChange={event => this.setState({ value: event.target.value })} required />
           </div>
-          <button>Enter</button>
+          <button disabled={!this.state.button}>Enter</button>
         </form>
         <hr />
         <h4>Time to pick a Winner</h4>
-        <button onClick={this.onClick}>Pick a Winner</button>
+        <button onClick={this.onClick} disabled={!this.state.button}>Pick a Winner</button>
         <hr />
-        <h3>{this.state.message}</h3>
+        <h3>Status : {this.state.message}</h3>
+        <hr />
+        <h4>Previous Winner : {this.state.previousWinner}</h4>
       </div>
     );
   }

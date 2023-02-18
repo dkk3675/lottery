@@ -1,14 +1,19 @@
 import web3 from "./web3";
 
-const address = "0x0a2fE2228301217CE11cFd46B8d8afB772f8D11A";
+const address = "0x4f6440e8070205561885bd7a21832d4e87996c5B";
 const abi = [
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [],
-		"name": "enter",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"name": "manager",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -19,12 +24,6 @@ const abi = [
 		"payable": true,
 		"stateMutability": "payable",
 		"type": "function"
-	},
-	{
-		"inputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
 	},
 	{
 		"constant": true,
@@ -43,7 +42,7 @@ const abi = [
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "manager",
+		"name": "winner",
 		"outputs": [
 			{
 				"name": "",
@@ -52,6 +51,15 @@ const abi = [
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "enter",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -72,6 +80,12 @@ const abi = [
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	}
 ];
 const contract = new web3.eth.Contract(abi, address);
