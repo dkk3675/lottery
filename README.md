@@ -6,4 +6,4 @@ For testing purposes on your local machine,<br />
 Clone the Repository : `git clone https://github.com/dkk3675/lottery.git` <br />
 Change directory : `cd lottery` <br />
 Install all dependencies : `npm install` <br />
-Start the server on your local machine : `npm start` <br />
+Start the server on your local machine : `npm run start` <br />
