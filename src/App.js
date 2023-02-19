@@ -13,7 +13,8 @@ class App extends React.Component {
     const manager = await lottery.methods.manager().call();
     const players = await lottery.methods.getPlayers().call();
     const balance = await web3.eth.getBalance(lottery.options.address);
-    const winner = await axios.get(process.env.REACT_APP_SERVER);
+    const winner = await axios.get(process.env.REACT_APP_SERVER)
+    .catch(err => console.log(err));
 
     const timestamp = new Date(winner.data.createdAt);
 
