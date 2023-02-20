@@ -3,6 +3,7 @@ import React from "react";
 import web3 from './web3';
 import lottery from './lottery';
 import axios from "axios";
+import Lottery from './lottery.png';
 
 
 class App extends React.Component {
@@ -101,6 +102,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <img src={Lottery} alt="" className="img" />
         <h2>LOTTERY CONTRACT</h2>
         <p>
           The manager of this contract is <b>{this.state.manager}</b>.
@@ -115,6 +117,7 @@ class App extends React.Component {
             <label>Amount of ether to enter</label>&nbsp;&nbsp;
             <input placeholder="enter value > 0.01 ether" value={this.state.value} onChange={event => this.setState({ value: event.target.value })} required />
           </div>
+          <br />
           <button disabled={!this.state.button}>Enter</button>
         </form>
         <hr />
