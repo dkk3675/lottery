@@ -1,12 +1,12 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const Web3 = require('web3');
 const { interface, bytecode } = require('./compile');
+require('dotenv');
 // console.log(interface)
 
 const provider = new HDWalletProvider(
-  'genre snake large cloth rare basic confirm tiger bread unable police pill',
-  'https://goerli.infura.io/v3/68bef7a42aaa4bd88ccb0fd4065ca789'
-
+  process.env.PERSONAL_KEY,
+  process.env.INFURA_API_KEY
 );
 const web3 = new Web3(provider);
 
