@@ -1,8 +1,153 @@
-.App {
+/* App.css */
+
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  max-width: 98vw;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.lottery-image {
+  display: block;
+  margin: 3vh auto;
+  width: 100px;
+  height: 100px;
+}
+
+/* Header styles */
+h2 {
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+}
+
+/* Main content styles */
+p {
+  text-align: center;
+  color: #555;
+}
+
+hr {
+  margin: 20px 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+}
+
+/* Entry form styles */
+.entry-form {
   text-align: center;
 }
 
-.img{
-  width: 100px;
-  height: 100px;
+.input-container {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+input {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.entry-button {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.entry-button:hover {
+  background-color: #0056b3;
+}
+
+/* Winner section styles */
+.winner-section {
+  text-align: center;
+}
+
+.winner-button {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.winner-button:hover {
+  background-color: #1d9e32;
+}
+
+/* Transaction message styles */
+.transaction-message {
+  text-align: center;
+  color: #ff6600;
+}
+
+/* Previous winner styles */
+.previous-winner {
+  text-align: center;
+  color: #333;
+}
+
+.entry-button:disabled, .winner-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+  color: black;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  .input-container {
+    margin-bottom: 10px;
+  }
+
+  input {
+    padding: 8px;
+  }
+
+  .entry-button,
+  .winner-button {
+    padding: 8px 16px;
+  }
+
+  .previous-winner {
+    font-size: 14px;
+  }
 }
