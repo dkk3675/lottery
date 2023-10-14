@@ -66,6 +66,22 @@ input {
   border-radius: 3px;
 }
 
+.no-metamask > p{
+  color: red;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.no-metamask{
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 50%;
+}
+
 .entry-button {
   display: block;
   margin: 0 auto;

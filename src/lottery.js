@@ -1,6 +1,5 @@
 import web3 from "./web3";
 
-const address = "0x2c06AFe194FA2942DDcF9DabCaB9B79E2DF396F3";
 const abi = [
   {
     constant: true,
@@ -88,5 +87,6 @@ const abi = [
     type: "constructor",
   },
 ];
-const contract = new web3.eth.Contract(abi, address);
+
+const contract = new web3.eth.Contract(abi, process.env.REACT_APP_CONTRACT_ADDRESS);
 export default contract;

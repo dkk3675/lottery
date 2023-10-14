@@ -9,15 +9,18 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 class App extends React.Component {
-  state = {
-    manager: "",
-    players: [],
-    balance: "",
-    value: "",
-    previousWinner: "--",
-    button: true,
-    isManager: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      manager: "",
+      players: [],
+      balance: "",
+      value: "",
+      previousWinner: "--",
+      button: true,
+      isManager: false,
+    };
+  }
 
   async componentDidMount() {
     const manager = await lottery.methods.manager().call();
@@ -201,54 +204,67 @@ class App extends React.Component {
         <ToastContainer position="top-left" />
         <img src={LotteryImage} alt="Lottery" className="lottery-image" />
         <h2>LOTTERY CONTRACT</h2>
-        <p>
-          The manager of this contract is <b>{this.state.manager}</b>. There are
-          currently <b>{this.state.players.length} people</b> entered, competing
-          to win <b>{web3.utils.fromWei(this.state.balance, "ether")} ethers</b>
-          .
-        </p>
+        {window.ethereum && (
+          <p>
+            The manager of this contract is <b>{this.state.manager}</b>. There
+            are currently <b>{this.state.players.length} people</b> entered,
+            competing to win{" "}
+            <b>{web3.utils.fromWei(this.state.balance, "ether")} ethers</b>.
+          </p>
+        )}
 
         <hr />
 
-        <form onSubmit={this.onSubmit} className="entry-form">
-          <h4>Want to try your luck?</h4>
-          <div className="input-container">
-            <label>Amount of ether to enter</label>
-            <input
-              type="number"
-              placeholder="Enter value > 0.01 ether"
-              value={this.state.value}
-              onChange={(event) => this.setState({ value: event.target.value })}
-              required
-            />
-          </div>
-          <button
-            className="entry-button"
-            disabled={this.state.manager === "" || !this.state.button}
-            onClick={this.openModal}
-          >
-            Enter
-          </button>
-        </form>
+        {window.ethereum ? (
+          <div>
+            <form onSubmit={this.onSubmit} className="entry-form">
+              <h4>Want to try your luck?</h4>
+              <div className="input-container">
+                <label>Amount of ether to enter</label>
+                <input
+                  type="number"
+                  placeholder="Enter value > 0.01 ether"
+                  value={this.state.value}
+                  onChange={(event) =>
+                    this.setState({ value: event.target.value })
+                  }
+                  required
+                />
+              </div>
+              <button
+                className="entry-button"
+                disabled={this.state.manager === "" || !this.state.button}
+                onClick={this.openModal}
+              >
+                Enter
+              </button>
+            </form>
 
-        {this.state.isManager && (
-          <div className="winner-section">
+            {this.state.isManager && (
+              <div className="winner-section">
+                <hr />
+                <h4>Time to pick a Winner</h4>
+                <button
+                  onClick={this.onClick}
+                  className="winner-button"
+                  disabled={!this.state.button}
+                >
+                  Pick a Winner
+                </button>
+              </div>
+            )}
+
             <hr />
-            <h4>Time to pick a Winner</h4>
-            <button
-              onClick={this.onClick}
-              className="winner-button"
-              disabled={!this.state.button}
-            >
-              Pick a Winner
-            </button>
+
+            <h4 className="previous-winner">
+              Recent Winner: {this.state.previousWinner}
+            </h4>
+          </div>
+        ) : (
+          <div className="no-metamask">
+            <p>Please install Metamask to use this application.</p>
           </div>
         )}
-        <hr />
-
-        <h4 className="previous-winner">
-          Recent Winner: {this.state.previousWinner}
-        </h4>
       </div>
     );
   }
