@@ -263,10 +263,21 @@ class App extends React.Component {
                 <h4 className="previous-winner">
                   Recent Winner: {this.state.previousWinner}
                 </h4>
+
+                <p>
+                  For more details:{" "}
+                  <a
+                    target="_blank"
+                    href="https://sepolia.etherscan.io/address/0x2c06AFe194FA2942DDcF9DabCaB9B79E2DF396F3"
+                    rel="noreferrer"
+                  >
+                    Click here
+                  </a>
+                </p>
               </div>
             ) : (
               <div className="no-metamask">
-                  <p>Please connect to Metamask to use this application.</p>
+                <p>Please connect to Metamask to use this application.</p>
               </div>
             )}
           </div>
