@@ -23,13 +23,13 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    const manager = await lottery.methods.manager().call();
-
+    if (!window.ethereum) return;
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
-    const isManager = manager.toLowerCase() === accounts[0].toLowerCase();
     window.ethereum.on("accountsChanged", this.handleAccountsChanged);
+    const manager = await lottery.methods.manager().call();
+    const isManager = manager.toLowerCase() === accounts[0].toLowerCase();
 
     const players = await lottery.methods.getPlayers().call();
     const balance = await web3.eth.getBalance(lottery.options.address);
@@ -73,10 +73,12 @@ class App extends React.Component {
 
   componentWillUnmount() {
     // Remove the event listener when the component unmounts
-    window.ethereum.removeListener(
-      "accountsChanged",
-      this.handleAccountsChanged
-    );
+    if (window.ethereum) {
+      window.ethereum.removeListener(
+        "accountsChanged",
+        this.handleAccountsChanged
+      );
+    }
   }
 
   onSubmit = async (event) => {
@@ -204,7 +206,7 @@ class App extends React.Component {
         <ToastContainer position="top-left" />
         <img src={LotteryImage} alt="Lottery" className="lottery-image" />
         <h2>LOTTERY CONTRACT</h2>
-        {window.ethereum && (
+        {window.ethereum && window.ethereum.selectedAddress && (
           <p>
             The manager of this contract is <b>{this.state.manager}</b>. There
             are currently <b>{this.state.players.length} people</b> entered,
@@ -217,48 +219,56 @@ class App extends React.Component {
 
         {window.ethereum ? (
           <div>
-            <form onSubmit={this.onSubmit} className="entry-form">
-              <h4>Want to try your luck?</h4>
-              <div className="input-container">
-                <label>Amount of ether to enter</label>
-                <input
-                  type="number"
-                  placeholder="Enter value > 0.01 ether"
-                  value={this.state.value}
-                  onChange={(event) =>
-                    this.setState({ value: event.target.value })
-                  }
-                  required
-                />
-              </div>
-              <button
-                className="entry-button"
-                disabled={this.state.manager === "" || !this.state.button}
-                onClick={this.openModal}
-              >
-                Enter
-              </button>
-            </form>
+            {window.ethereum.selectedAddress ? (
+              <div>
+                <form onSubmit={this.onSubmit} className="entry-form">
+                  <h4>Want to try your luck?</h4>
+                  <div className="input-container">
+                    <label>Amount of ether to enter</label>
+                    <input
+                      type="number"
+                      placeholder="Enter value > 0.01 ether"
+                      value={this.state.value}
+                      onChange={(event) =>
+                        this.setState({ value: event.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                  <button
+                    className="entry-button"
+                    disabled={this.state.manager === "" || !this.state.button}
+                    onClick={this.openModal}
+                  >
+                    Enter
+                  </button>
+                </form>
 
-            {this.state.isManager && (
-              <div className="winner-section">
+                {this.state.isManager && (
+                  <div className="winner-section">
+                    <hr />
+                    <h4>Time to pick a Winner</h4>
+                    <button
+                      onClick={this.onClick}
+                      className="winner-button"
+                      disabled={!this.state.button}
+                    >
+                      Pick a Winner
+                    </button>
+                  </div>
+                )}
+
                 <hr />
-                <h4>Time to pick a Winner</h4>
-                <button
-                  onClick={this.onClick}
-                  className="winner-button"
-                  disabled={!this.state.button}
-                >
-                  Pick a Winner
-                </button>
+
+                <h4 className="previous-winner">
+                  Recent Winner: {this.state.previousWinner}
+                </h4>
+              </div>
+            ) : (
+              <div className="no-metamask">
+                  <p>Please connect to Metamask to use this application.</p>
               </div>
             )}
-
-            <hr />
-
-            <h4 className="previous-winner">
-              Recent Winner: {this.state.previousWinner}
-            </h4>
           </div>
         ) : (
           <div className="no-metamask">
