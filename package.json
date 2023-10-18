@@ -11,7 +11,7 @@
     "web3": "^1.8.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build"
   },
   "eslintConfig": {
