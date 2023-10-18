@@ -1,8 +1,8 @@
 require("dotenv").config();
-const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 const app = express();
+// const IPFSMini = require("ipfs-mini");
 
 app.use(cors({ origin: process.env.ORIGIN }));
 app.use(express.json());
@@ -37,13 +37,24 @@ const Winners = sequelize.define("winners", {
     type: Sequelize.FLOAT,
     allowNull: false,
   },
+  // ipfs_cid: {
+  //   type: Sequelize.STRING,
+  //   allowNull: true,
+  // },
 });
+
+// const ipfs = new IPFSMini({
+//   host: "ipfs.infura.io",
+//   port: 5001,
+//   protocol: "https",
+// });
 
 app.post("/", (req, res) => {
   Winners.sync({
     force: false,
   })
     .then(() => {
+      // const cid = await storeWinnerDataInIPFS(req.body);
       return Winners.create({
         winner: req.body.winner,
         no_of_participations: req.body.no_of_participations,
@@ -65,6 +76,8 @@ app.get("/", (req, res) => {
     force: false,
   })
     .then(() => {
+      // const earliestWinner = await retrieveEarliestWinnerFromIPFS();
+      // res.send(earliestWinner);
       return Winners.findAll({
         order: [["createdAt", "DESC"]],
       });
@@ -82,3 +95,40 @@ app.get("/", (req, res) => {
 app.listen(process.env.PORT, () => {
   console.log(`Connected at port ${process.env.PORT}\n`);
 });
+
+// // Function to store winner data in IPFS
+// async function storeWinnerDataInIPFS(winnerData) {
+//   try {
+//     const jsonData = JSON.stringify(winnerData);
+
+//     const { cid } = await ipfs.add(jsonData);
+//     return cid;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+// // Function to retrieve the earliest winner from IPFS
+// async function retrieveEarliestWinnerFromIPFS() {
+//   try {
+//     let earliestWinner = null;
+//     let earliestWinTime = new Date();
+
+//     // Query the IPFS network for winner data
+//     const files = JSON.parse(await ipfs.cat("/ipfs"));
+
+//     for (const file of files) {
+//       const winnerData = JSON.parse(file.content.toString());
+
+//       const winTime = new Date(winnerData.win_time);
+//       if (winTime < earliestWinTime) {
+//         earliestWinTime = winTime;
+//         earliestWinner = winnerData;
+//       }
+//     }
+
+//     return earliestWinner;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
